@@ -32,5 +32,7 @@ do
     ./090-outbound-netcon-list.sh $account $region
     echo "architecture report"
     ./100-architecutre-report.rb $account $region > reports/arch-$account-$region.txt
+    echo "az use report"
+    ./110-az-usage.rb reports/$account-$region.json > reports/azuse-$account-$region.txt
   done
 done

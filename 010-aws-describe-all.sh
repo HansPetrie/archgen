@@ -1,6 +1,5 @@
 #!/bin/bash -e
 
-rm -rf awsreport
 mkdir -p awsreport 
 IFS=$'\n' 
 profile=$1
