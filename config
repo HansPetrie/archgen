@@ -1,0 +1,4 @@
+#!/bin/bash
+username="hans"
+accounts="qa production devops"
+regions="us-east-1"

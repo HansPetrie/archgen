@@ -1,11 +1,11 @@
 #!/bin/bash
 
+source config
+
 if [ $# -ne 2 ]; then echo "Requires account and region as arguments"; exit 1; fi
 
 rm -rf hosts/$1/$2
 mkdir -p hosts/$1/$2
-
-username="hans"
 
 for host in `cat reports/instance-ips-$1-$2.txt`
 do 

@@ -3,21 +3,8 @@
 rm -rf awsreport
 mkdir -p awsreport 
 IFS=$'\n' 
-
-#For all regions use this
-#regions=$(aws ec2 --region us-east-1 describe-regions --query Regions[*].[RegionName] --output text)
-
-#To hard code a single region
-regions="us-east-1"
-
-#To use several profiles
-profiles="devops
-production
-qa"
-
-#To use several regions
-#regions="us-east-1
-#us-west-1"
+profile=$1
+region=$2
 
 commands="ec2 describe-account-attributes
 ec2 describe-addresses
@@ -39,13 +26,9 @@ elb describe-load-balancers
 rds describe-db-instances
 "
 
-for region in $regions; do
-  for command in $commands; do
-    for profile in $profiles; do
-      filename=$(echo $command | sed 's/ /-/g' )
-      set -x
-      bash -c "aws --profile $profile --output json --region $region $command > awsreport/$profile-$region-$filename"
-      set +x
-    done
-  done
+for command in $commands; do
+  filename=$(echo $command | sed 's/ /-/g' )
+  set -x
+    bash -c "aws --profile $profile --output json --region $region $command > awsreport/$profile-$region-$filename"
+  set +x
 done
