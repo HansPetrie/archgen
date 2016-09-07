@@ -34,5 +34,7 @@ do
     ./100-architecutre-report.rb $account $region > reports/arch-$account-$region.txt
     echo "az use report"
     ./110-az-usage.rb reports/$account-$region.json > reports/azuse-$account-$region.txt
+    echo "architecture csv"
+    ./120-arch-csv-generator.rb $account $region > reports/arch-report-$account-$region.csv
   done
 done
