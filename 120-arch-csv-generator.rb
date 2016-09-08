@@ -24,7 +24,7 @@ input_hash['VPC'].each do |vpc|
         end
       end
       print ",\""
-      system ("cat hosts/#{@account}/#{@region}/netcon-#{instance['PrivateIpAddress']} | sed 's|\"||g' | tr '\n' '     ' ")
+      system ("cat hosts/#{@account}/#{@region}/netcon-#{instance['PrivateIpAddress']} | sed 's|\"||g' | tr '\n' ' '")
       print "\"\n"
     end
   end
