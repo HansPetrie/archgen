@@ -9,9 +9,12 @@ do
   do
     machinename=`cat reports/ips-$1-$2.txt | grep $ip | head -1 | cut -f2 -d'"'`
     if [ -z "$machinename" ]; then
-      machinename=`dig +short -x $ip`
+      machinename="$ip `dig +short -x $ip`"
+      if [ -z "$machinename" ]; then
+        machinename=$ip
+      fi
     fi
-    echo "$file converted $ip $machinename"
+#    echo "$file converted $ip $machinename"
     sed -i "s|$ip|$machinename|g" hosts/$1/$2/netcon-$file 
   done
 done

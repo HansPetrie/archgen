@@ -55,26 +55,34 @@ input_hash['VPC'].each do |vpc|
     end
   end
   puts "INSTANCES DETAILS-------------------------------------------------------------------------"
-  vpc['Subnets'].each do |subnet|
-    subnet['Instances'].each do |instance|
-      instances=instances+1
-      #puts "     #{subnet['SubnetId']} #{subnet['CidrBlock']} #{subnet['AvailabilityZone']}"
-      if instance['Tags'] then
-        instance['Tags'].each do |instance_tags|
-          if instance_tags['Key'] == "Name" then
-            print "INSTANCE #{instances} #{instance_tags['Key']}:#{instance_tags['Value']}"
-          end 
+  IO.foreach("reports/tags-sorted-#{@account}-#{@region}.txt") do |line|
+    vpc['Subnets'].each do |subnet|
+      matchline = line.strip
+      subnet['Instances'].each do |instance|
+        #puts "     #{subnet['SubnetId']} #{subnet['CidrBlock']} #{subnet['AvailabilityZone']}"
+        if !instance['Tags'] then 
+          abort "FATAL ERROR NO TAG for #{instance_id}"
+        end
+        if instance['Tags'] then
+          instance['Tags'].each do |instance_tags|
+            if instance_tags['Key'] == "Name" then
+              if instance_tags['Value'] == matchline then
+                instances=instances+1
+                print "#{instances} #{instance_tags['Value']}"
+                print "\n"
+                printf "    %-10.10s %-9.9s %-12.12s %-12.12s %-10.10s",subnet['AvailabilityZone'], instance['InstanceId'], instance['PrivateIpAddress'], instance['PublicIpAddress'], instance['InstanceType']
+                print  "SGs: "
+                instance["SecurityGroups"].each do |security_group|
+                  print"  #{security_group['GroupName']}"
+                end
+                print "\n"
+                system ("cat hosts/#{@account}/#{@region}/netcon-#{instance['PrivateIpAddress']}")
+                puts "---------------------------------------------------------------------------------------------------------------------------------" 
+              end
+            end 
+          end
         end
       end
-      print "\n"
-      printf "    %-10.10s %-9.9s %-12.12s %-12.12s %-10.10s",subnet['AvailabilityZone'], instance['InstanceId'], instance['PrivateIpAddress'], instance['PublicIpAddress'], instance['InstanceType']
-      print  "SGs: "
-      instance["SecurityGroups"].each do |security_group|
-        print"  #{security_group['GroupName']}"
-      end
-      print "\n"
-      system ("cat hosts/#{@account}/#{@region}/netcon-#{instance['PrivateIpAddress']}")
-      puts "---------------------------------------------------------------------------------------------------------------------------------" 
     end
   end
   vpc['RDS'].each do |rds|
