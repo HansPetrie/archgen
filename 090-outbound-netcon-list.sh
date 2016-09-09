@@ -7,7 +7,7 @@ do
   # for all the ips in the new file - replace it with the ip and the hostname
   for ip in `cat hosts/$1/$2/netcon-$file`
   do
-    machinename=`cat reports/ips-$1-$2.txt | grep $ip | head -1 | cut -f2 -d'"'`
+    machinename=`cat reports/ips-$1-$2.txt | grep -w $ip | head -1 | cut -f2 -d'"'`
     if [ -z "$machinename" ]; then
       machinename="`dig +short -x $ip`"
     fi
