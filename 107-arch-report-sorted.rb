@@ -89,5 +89,6 @@ input_hash['VPC'].each do |vpc|
     rdscount=rdscount+1
     rdsip=`dig +short #{rds['Endpoint']['Address']} | head -1 | tr '\n' ' '` 
     puts "  #{rdscount} RDS #{rdsip} #{rds['Endpoint']['Address']}  #{rds['DBInstanceClass']}  #{rds['Engine']} Multi-AZ: #{rds['MultiAZ']}"
+    puts "     #{rds['AvailabilityZone']}  #{rds['SecondaryAvailabilityZone']}"
   end
 end
