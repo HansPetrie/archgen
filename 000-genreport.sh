@@ -21,6 +21,7 @@ do
     ./050-securitygroups.rb awsreport/$account-$region-ec2-describe-security-groups > reports/sg-$account-$region.txt
     echo "summary report"
     ./060-summary-report.rb reports/$account-$region.json > reports/summary-$account-$region.txt
+    ./065-subnet-report.rb reports/$account-$region.json > reports/subnets-$account-$region.txt 
     echo "network"
     ./070-network.rb $account $region > reports/enis-$account-$region.txt
     echo "host ips"
