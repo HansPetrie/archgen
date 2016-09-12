@@ -87,6 +87,7 @@ input_hash['VPC'].each do |vpc|
   end
   vpc['RDS'].each do |rds|
     rdscount=rdscount+1
-    puts "  #{rdscount} RDS #{rds['DBInstanceIdentifier']}  #{rds['DBInstanceClass']}  #{rds['Engine']}"
+    rdsip=`dig +short #{rds['Endpoint']['Address']} | head -1 | tr '\n' ' '` 
+    puts "  #{rdscount} RDS #{rdsip} #{rds['Endpoint']['Address']}  #{rds['DBInstanceClass']}  #{rds['Engine']} Multi-AZ: #{rds['MultiAZ']}"
   end
 end
