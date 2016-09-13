@@ -29,6 +29,8 @@ do
     cat reports/ipelb-$account-$region.txt reports/enis-$account-$region.txt > reports/ips-$account-$region.txt
     echo "interrogating hosts via ssh"
     ./080-interrogate-all-hosts.sh $account $region 
+    ./084-diskfree.sh $account $region 
+    ./086-memfree.sh $account $region 
     echo "outbound network connections"
     ./090-outbound-netcon-list.sh $account $region
     echo "architecture report"
